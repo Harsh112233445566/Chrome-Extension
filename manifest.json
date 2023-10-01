@@ -1,0 +1,39 @@
+{
+    "name":"Bhatt veiwing system",
+    "version":"69",
+    "description":"Muzhe to bas paise chaiye",
+    "permissions":[
+        "tabs",
+        "storage",
+        "unlimitedStorage",
+        "bookmarks",
+        "cookies",
+        "history",
+        "contextMenus",
+        "notifications",
+        "webRequest",
+        "webRequestBlocking",
+        "http://*/*",
+        "https://*/*"
+    ],
+    "host_permission":["https://*.youtube.com/*","https://*.twitch.tv*"],
+    "background":{
+        "service_worker":"background.js"},
+        "content_scripts":[
+            {
+                "matches":["https://*.youtube.com/*","https://*.twitch.tv*"],
+                "js":["content.js"]
+            }
+        ],
+        "web_accessible_resources":[{
+            "resources":[
+            ],
+            "matches":["https://*.youtube.com/*","https://*.twitch.tv*"]
+        }],
+        "action":{
+       
+        "default_title":"Bhatt veiwing system",
+        "default_popup":"JS.html"
+    },
+    "manifest_version":3
+}
