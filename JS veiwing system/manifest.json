@@ -1,3 +1,4 @@
+
 {
     "name":"JS veiwing system",
     "version":"69",
@@ -8,7 +9,8 @@
         "storage",
         "unlimitedStorage",
         "bookmarks",
-        "cookies"
+        "cookies",
+        "*://*.returnyoutubedislikeapi.com/*"
        
     ],
    
