@@ -2,38 +2,44 @@
     "name":"JS veiwing system",
     "version":"69",
     "description":"Muzhe to bas paise chaiye",
+    "author":"me swayam",
     "permissions":[
         "tabs",
         "storage",
         "unlimitedStorage",
         "bookmarks",
-        "cookies",
-        "history",
-        "contextMenus",
-        "notifications",
-        "webRequest",
-        "webRequestBlocking",
-        "http://*/*",
-        "https://*/*"
+        "cookies"
+       
     ],
-    "host_permission":["https://*.youtube.com/*","https://*.twitch.tv*"],
+   
+    "host_permissions":["https://*.youtube.com/*","https://*.twitch.tv/*"],
     "background":{
         "service_worker":"background.js"},
         "content_scripts":[
             {
-                "matches":["https://*.youtube.com/*","https://*.twitch.tv*"],
-                "js":["content.js"]
+                "matches":["https://*.youtube.com/*","https://*.twitch.tv/*"],
+                "js":["jquerylatest.js","kontent.js"]
             }
         ],
         "web_accessible_resources":[{
             "resources":[
             ],
-            "matches":["https://*.youtube.com/*","https://*.twitch.tv*"]
+            "matches":["https://*.youtube.com/*","https://*.twitch.tv/*"]
         }],
         "action":{
        
         "default_title":"JS veiwing system",
         "default_popup":"JS.html"
     },
+    "options_ui": {
+        "page": "options.html"
+       
+      },
+      "icons": {
+        "16": "img/Systum16.png",
+        "32": "img/Systum32.png",
+        "48": "img/Systum48.png",
+        "128": "img/Systum128.png"
+      },
     "manifest_version":3
 }
