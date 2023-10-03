@@ -1,14 +1,18 @@
+
 //DOM mutation handle karne keliye
 const HANDLE_DOM_MUTATIONS_THROTTLE_MS = 100
 let domMutationsAreThrottled = false
-let hasUnseenDomMutations = false 
+let hasUnseenDomMutations = false
 //API request retry karne keliye
 const API_RETRY_DELAY = 5000
+//ek thumbnail ke liye max 10 retries hai
 const MAX_RETRIES_PER_THUMBNAIL = 10
+//API request retry karne keliye
 let isPendingApiRetry = false
-//cache karne keliye
 let thumbnailsToRetry = []
 //theme select karne keliye
+//alag alag thumbnail keliye alag alag elements hai link keliye hai isliye alag alag selectors hai
+//refernce by @elliotwaite
 let curTheme = 0  
 const THEME_MODERN = 1 
 const THEME_CLASSIC = 2  
@@ -17,7 +21,6 @@ const THEME_MOBILE = 4
 const NUM_THEMES = 4
 const isDarkTheme = getComputedStyle(document.body).getPropertyValue('--yt-spec-general-background-a') === ' #181818'
 const THUMBNAIL_SELECTORS = []
-//alag alag thumbnail keliye alag alag elements hai link keliye hai isliye alag alag selectors hai
 THUMBNAIL_SELECTORS[THEME_MODERN] = '' +
     'a#thumbnail[href]'
 
@@ -45,11 +48,11 @@ THUMBNAIL_SELECTORS[THEME_MOBILE] = '' +
     'a.media-item-thumbnail-container, ' +
     'a.compact-media-item-image, ' +
     'a.video-card-image'
-
-
+    
 const THUMBNAIL_SELECTOR_VIDEOWALL = '' +
     'a.ytp-videowall-still'
 // default user settings diya hai option lagane ki soch raha tha but nahi huva 😢
+
 const DEFAULT_USER_SETTINGS = {
   barTooltip: true,
   useOnVideoPage: false,
@@ -61,32 +64,25 @@ let userSettings = DEFAULT_USER_SETTINGS
 function JSrating(videoData){
   let x=videoData.likes
   let y=videoData.dislikes+1
-  let v=videoData.view
-  console.log(toString(x));
-  let bookmarkelement,bookmarkelement1
-    bookmarkelement1 = '<ytrb-bookmark id="'+x+'">' +'<ytb-image>'+'	&#9989;'+'</ytb-image>'+
+  let dontwatch,watch
+    watch = '<ytrb-bookmark id="'+x+'">' +'<ytb-image>'+'	&#9989;'+'</ytb-image>'+
                     '</ytrb-bookmark>'
-    bookmarkelement= '<ytrb-bookmark id="'+x+'">' +'<ytb-image>'+'&#10060;'+'</ytb-image>'+
+    dontwatch= '<ytrb-bookmark id="'+x+'">' +'<ytb-image>'+'&#10060;'+'</ytb-image>'+
                     '</ytrb-bookmark>'
   if(x/y>25)
   {
-    return '<ytrb-bar style="opacity:1;">' +
-      bookmarkelement1+
-         '<ytrb-tooltip><div>' + "Dekhne layak" +'</div></ytrb-tooltip>'+
-'</ytrb-bar>'}
+    return '<ytrb-bar style="opacity:1;">' +watch+'<ytrb-tooltip><div>' + "Dekhne layak" +'</div></ytrb-tooltip>'+'</ytrb-bar>'}
 else {
-  return '<ytrb-bar style="opacity:1;">' +
-      bookmarkelement+
-         '<ytrb-tooltip><div>' + "Samay ki Barbadi" +'</div></ytrb-tooltip>'+
-'</ytrb-bar>'
+  return '<ytrb-bar style="opacity:1;">' + dontwatch+'<ytrb-tooltip><div>' + "Samay ki Barbadi" +'</div></ytrb-tooltip>'+'</ytrb-bar>'
 }
   }
-  //like dislike display keliye function hai
+//likes dislike display keliye function hai
 function getlikesdislikes(videoData) {
   return '<h5  class="style-scope ytd-video-meta-block ytd-grid-video-renderer ytrb-percentage">'+'&nbsp;|&nbsp;'+'&#128077;'+videoData.likes.toLocaleString()+'&nbsp;|&nbsp;'+'&#128078;'+videoData.dislikes.toLocaleString()+'</h5>'
 }
-//ye thambnail ke hisab se DOM elemnt change karne keliye hai
-//yaha hum check karke sare themes keliye check karenge ki konsa theme select hai
+//ye thambnail ke hisab se DOM elemnt change karne keliye hai 
+//yaha hum sare themes keliye check karenge ki konsa theme select hai
+//reference by https://github.com/elliotwaite
 function getNewThumbnails() {
   let thumbnails = []
   if (curTheme) {
@@ -121,56 +117,45 @@ function getThumbnailsAndIds(thumbnails) {
       url = $(thumbnail).attr('href')
       const firstChild = $(thumbnail).children(':first')[0]
       if ($(firstChild).is('.video-thumbnail-container-compact')) {
-        thumbnail = firstChild
-      }} else {
+        thumbnail = firstChild}} else {
       url = $(thumbnail).attr('href')}
     if (!url) {
       return true}
     const previousUrl = $(thumbnail).attr('data-ytrb-processed')
     if (previousUrl) {
-     
       if (previousUrl === url) {
-        
         if (curTheme === THEME_MOBILE) {
-          
           if ($(thumbnail).children().last().is('ytrb-bar')) {
             return true
-          }
-        } else {
+          } } else {
           return true
-        }
-      } else {
-       
+        }} else {
         $(thumbnail).children('ytrb-bar').remove()
-        $(thumbnail).removeAttr('data-ytrb-retries')
-      }
-    }
+        $(thumbnail).removeAttr('data-ytrb-retries')}}
     $(thumbnail).attr('data-ytrb-processed', url)
     const match = url.match(/.*[?&]v=([^&]+).*/)
     if (match) {
       const id = match[1]
       thumbnailsAndVideoIds.push([thumbnail, id])
-    }
-  })
-  return thumbnailsAndVideoIds
-}
-
+    }})
+  return thumbnailsAndVideoIds}
+//jessa naam vessa kaam video data object return karega
 function getVideoDataObject(likes, dislikes) {
-  const total = likes + dislikes
-  const rating = total ? likes / total : null
   return {
     likes: likes,
     dislikes: dislikes,
-    total: total,
-    rating: rating,
   }
 }
+//ye agge ane vale thumbnails ko process karega
 function retryProcessingThumbnailInTheFuture(thumbnail) {
   thumbnailsToRetry.push(thumbnail)
+  //agar api retry pending hai to hum usko delay karenge
   if (!isPendingApiRetry) {
     isPendingApiRetry = true
     setTimeout(() => {
       isPendingApiRetry = false
+      //yek thumbnail ke liye max 10 retries hai
+      //yaha hum uss thambnail keliye request bhej rahe hai
       thumbnailsToRetry.forEach(thumbnail => {
         const retriesAttr = $(thumbnail).attr('data-ytrb-retries')
         const retriesNum = retriesAttr ? Number.parseInt(retriesAttr, 10) : 0
@@ -185,7 +170,7 @@ function retryProcessingThumbnailInTheFuture(thumbnail) {
     }, API_RETRY_DELAY)
   }
 }
-
+//ye tooltip text se video data object return karega
 function getVideoData(thumbnail, videoId) {
   return new Promise(resolve => {
     chrome.runtime.sendMessage(
@@ -197,9 +182,11 @@ function getVideoData(thumbnail, videoId) {
         else {
           resolve(getVideoDataObject(likesData.likes, likesData.dislikes))
         }})})}
-function book(thumbnail, videoData) {
+function rating(thumbnail, videoData) {
   $(thumbnail).append(JSrating(videoData))
 }
+//ye like or dislikes keliye meta line pe show karne keliye hai
+//reference by  https://github.com/elliotwaite
 function likesanddislikes(thumbnail, videoData) {
   let metadataLine
   if (curTheme === THEME_MOBILE) {
@@ -216,13 +203,12 @@ function likesanddislikes(thumbnail, videoData) {
     ).find('#metadata-line').last()
   }
   if (metadataLine) {
-    for (const oldPercentage of metadataLine.children('.ytrb-percentage')) {
-      oldPercentage.remove()}
+    for (const oldlikes of metadataLine.children('.ytrb-percentage')) {
+      oldlikes.remove()}
     if (curTheme === THEME_MOBILE) {
-      for (const oldPercentage of metadataLine.children('.ytrb-percentage-separator')) {
-        oldPercentage.remove()
+      for (const oldlikes of metadataLine.children('.ytrb-percentage-separator')) {
+        oldlikes.remove()
       }}
-    if (videoData.rating != null && !(videoData.likes === 0 && videoData.dislikes >= 10)) {
       const oldlikes = getlikesdislikes(videoData)
       const lastSpan = metadataLine.children('span').last()
       if (lastSpan.length) {
@@ -233,57 +219,18 @@ function likesanddislikes(thumbnail, videoData) {
       } else {
         metadataLine.prepend(oldlikes)
         metadataLine.prepend('<span class="style-scope ytd-video-meta-block"></span>')
-      }}}}
+      }}}
+//ye new thumbnails process karne keliye hai
 function processNewThumbnails() {
   const thumbnails = getNewThumbnails()
   const thumbnailsAndVideoIds = getThumbnailsAndIds(thumbnails)
   for (const [thumbnail, videoId] of thumbnailsAndVideoIds) {
     getVideoData(thumbnail, videoId).then(videoData => {
       if (videoData !== null) {
-        if (userSettings.barHeight !== 0) {
-          book(thumbnail, videoData)
-        }
-        if (userSettings.showPercentage) {
+          rating(thumbnail, videoData)
           likesanddislikes(thumbnail, videoData)
-        }}})}}
-const NUMBERING_SYSTEM_DIGIT_STRINGS = ["0123456789",]
-function parseInternationalInt(string) {
-  string = string.replace(/[\s,.]/g, "")
-  if (/[^0-9]/.test(string)) {
-    let newString = ""
-    for (const char of string) {
-      for (const digitString of NUMBERING_SYSTEM_DIGIT_STRINGS) {
-        const index = digitString.indexOf(char)
-        if (index !== -1) {
-          newString += index
-          break}}}
-    string = newString}
-  return parseInt(string, 10)
-}
-
-
-function updateVideoRatingBar() {
-  $('.ryd-tooltip').each(function(_, rydTooltip) {
-    const tooltip = $(rydTooltip).find('#tooltip')
-    const curText = $(tooltip).text()
-
-    if (!curText.endsWith('\u200b')) {
-      const videoData = getVideoDataFromTooltipText(curText)
-
-      if (userSettings.barTooltip && videoData) {
-        $(tooltip).text(`${curText} \u00A0\u00A0 ` +
-          `${ratingToPercentage(videoData.rating ?? 0)} \u00A0\u00A0 ` +
-          `${videoData.total.toLocaleString()} total\u200b`)
-      } else {
-        $(tooltip).text(`${curText}\u200b`)
-      }
-
-      if (userSettings.useExponentialScaling && videoData && videoData.rating) {
-        $(rydTooltip).find('#ryd-bar')[0].style.width =  exponentialRatingWidthPercentage(videoData.rating) + '%'
-      }
-    }
-  })
-}
+        }})}}
+//ye DOM mutation handle karne keliye hai
 function handleDomMutations() {
   if (domMutationsAreThrottled) {
     hasUnseenDomMutations = true
@@ -297,11 +244,9 @@ function handleDomMutations() {
         handleDomMutations()
       }}, HANDLE_DOM_MUTATIONS_THROTTLE_MS)}}
 const mutationObserver = new MutationObserver(handleDomMutations)
-
+//cssFile  message query send karne keliye hai 
 chrome.storage.sync.get(DEFAULT_USER_SETTINGS, function(storedSettings) {
-  if (storedSettings) {
     userSettings = storedSettings
-  }
   const cssFiles = []
     cssFiles.push('css/bar.css')
       cssFiles.push('css/bar-bottom.css')
