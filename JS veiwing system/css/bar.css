@@ -1,0 +1,40 @@
+:root {
+  --ytrb-bar-height: 4px;
+  --ytrb-bar-opacity: 1;
+}
+ytb-image{
+  display: flex;
+  font-size: xx-large;
+  z-index: 1000;
+  margin-left: 20%;
+  
+}
+ytrb-bar {
+  display: block;
+  position: absolute;
+  width: 20%;
+  z-index: 999;
+  transition: opacity 0.2s ease-out 0.2s;
+  opacity: var(--ytrb-bar-opacity);
+}
+ytrb-bookmark {
+  display: flex;
+  z-index: 1000;
+}
+#thumbnail-container {
+  position: relative;
+}
+ytg-thumbnail .ytrb-bar {
+  z-index: 1;
+}
+ytm-app a.media-item-thumbnail-container, ytm-app a.compact-media-item-image {
+  position: relative;
+}
+ytm-app ytrb-bar {
+  z-index: auto;
+}
+ytm-media-item ytrb-bar {
+  margin-left: -12px;
+  margin-right: -12px;
+  width: calc(100% + 24px);
+}

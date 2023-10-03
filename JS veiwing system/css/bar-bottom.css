@@ -1,0 +1,59 @@
+ytrb-bar {
+  bottom: 0;
+}
+ytd-thumbnail-overlay-time-status-renderer {
+  bottom: var(--ytrb-bar-height) !important;
+}
+ytd-thumbnail-overlay-playback-status-renderer {
+  bottom: var(--ytrb-bar-height) !important;
+}
+.video-time {
+  margin-bottom: calc(var(--ytrb-bar-height) + 1px) !important
+}
+.video-time-overlay {
+  margin-bottom: calc(var(--ytrb-bar-height) + 1px) !important
+}
+.addto-button {
+  margin-bottom: calc(var(--ytrb-bar-height) + 1px) !important
+}
+.addto-queue-button {
+  margin-bottom: calc(var(--ytrb-bar-height) + 1px) !important
+}
+ytg-thumbnail-overlay-time-status-renderer {
+  bottom: calc(var(--ytrb-bar-height) + 4px) !important
+}
+.ytg-playlist-panel-video-renderer-0 ytg-text-badge-renderer.ytg-playlist-panel-video-renderer {
+  bottom: calc(var(--ytrb-bar-height) + 4px) !important
+}
+ytd-thumbnail-overlay-resume-playback-renderer,  
+.resume-playback-background, 
+.resume-playback-progress-bar,  
+ytg-thumbnail-overlay-resume-playback-renderer 
+{
+  top: 0 !important;
+}
+#bottom-thumbnail-overlay-badges  
+{
+  height: calc(100% - var(--ytrb-bar-height) - 4px) !important;
+}
+ytg-thumbnail-overlay-time-status-renderer 
+{
+  position: absolute !important;
+  bottom: var(--ytrb-bar-height) !important;
+  height: 15px !important;
+}
+ytm-thumbnail-overlay-time-status-renderer {
+  position: absolute;
+  bottom: calc(var(--ytrb-bar-height) + 1px) !important
+}
+ytm-thumbnail-overlay-playback-status-renderer {
+  position: absolute;
+  bottom: calc(var(--ytrb-bar-height) + 1px) !important
+}
+ytm-app .video-thumbnail-overlay-bottom-group {
+  top: 0;
+}
+ytm-thumbnail-overlay-resume-playback-renderer {
+  position: absolute;
+  top: 0 !important;
+}
