@@ -1,11 +1,14 @@
-
+//DOM mutation handle karne keliye
 const HANDLE_DOM_MUTATIONS_THROTTLE_MS = 100
 let domMutationsAreThrottled = false
-let hasUnseenDomMutations = false
+let hasUnseenDomMutations = false 
+//API request retry karne keliye
 const API_RETRY_DELAY = 5000
 const MAX_RETRIES_PER_THUMBNAIL = 10
 let isPendingApiRetry = false
+//cache karne keliye
 let thumbnailsToRetry = []
+//theme select karne keliye
 let curTheme = 0  
 const THEME_MODERN = 1 
 const THEME_CLASSIC = 2  
@@ -14,6 +17,7 @@ const THEME_MOBILE = 4
 const NUM_THEMES = 4
 const isDarkTheme = getComputedStyle(document.body).getPropertyValue('--yt-spec-general-background-a') === ' #181818'
 const THUMBNAIL_SELECTORS = []
+//alag alag thumbnail keliye alag alag elements hai link keliye hai isliye alag alag selectors hai
 THUMBNAIL_SELECTORS[THEME_MODERN] = '' +
     'a#thumbnail[href]'
 
@@ -45,6 +49,7 @@ THUMBNAIL_SELECTORS[THEME_MOBILE] = '' +
 
 const THUMBNAIL_SELECTOR_VIDEOWALL = '' +
     'a.ytp-videowall-still'
+// default user settings diya hai option lagane ki soch raha tha but nahi huva 😢
 const DEFAULT_USER_SETTINGS = {
   barTooltip: true,
   useOnVideoPage: false,
@@ -52,8 +57,8 @@ const DEFAULT_USER_SETTINGS = {
 }
 
 let userSettings = DEFAULT_USER_SETTINGS
-
-function getbookmark(videoData){
+//rating keliye function hai video dekhne layak hai ya nahi ye batane keliye
+function JSrating(videoData){
   let x=videoData.likes
   let y=videoData.dislikes+1
   let v=videoData.view
@@ -76,9 +81,12 @@ else {
 '</ytrb-bar>'
 }
   }
+  //like dislike display keliye function hai
 function getlikesdislikes(videoData) {
   return '<h5  class="style-scope ytd-video-meta-block ytd-grid-video-renderer ytrb-percentage">'+'&nbsp;|&nbsp;'+'&#128077;'+videoData.likes.toLocaleString()+'&nbsp;|&nbsp;'+'&#128078;'+videoData.dislikes.toLocaleString()+'</h5>'
 }
+//ye thambnail ke hisab se DOM elemnt change karne keliye hai
+//yaha hum check karke sare themes keliye check karenge ki konsa theme select hai
 function getNewThumbnails() {
   let thumbnails = []
   if (curTheme) {
@@ -146,6 +154,7 @@ function getThumbnailsAndIds(thumbnails) {
   })
   return thumbnailsAndVideoIds
 }
+
 function getVideoDataObject(likes, dislikes) {
   const total = likes + dislikes
   const rating = total ? likes / total : null
@@ -189,7 +198,7 @@ function getVideoData(thumbnail, videoId) {
           resolve(getVideoDataObject(likesData.likes, likesData.dislikes))
         }})})}
 function book(thumbnail, videoData) {
-  $(thumbnail).append(getbookmark(videoData))
+  $(thumbnail).append(JSrating(videoData))
 }
 function likesanddislikes(thumbnail, videoData) {
   let metadataLine
