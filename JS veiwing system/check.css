@@ -1,6 +1,16 @@
+
 .container {
     width: 280px;
     color: #314d3e;
-    display: inline-block;
+    border-radius: 8px;
+  }
+  
+  .title{
+    font-size: 14px;
+    font-weight: bold;
+    padding: 8px;
+    background-color: #20e060;
+    text-align: center;
+    border-radius: 8px;
   }
   

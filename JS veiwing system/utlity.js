@@ -1,3 +1,4 @@
+//tab ki url send karne keliye
 export async function getActiveTabURL() {
     const tabs = await chrome.tabs.query({
         currentWindow: true,
