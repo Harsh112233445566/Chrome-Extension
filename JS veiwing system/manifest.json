@@ -5,8 +5,8 @@
     "description":"Muzhe to bas paise chaiye",
     "author":"me swayam",
     "options_ui": {
-    
-        "browser_style": false
+      "page": "check.html",
+      "browser_style": false
       },
       "background": {
         "service_worker": "background.js"
@@ -42,7 +42,8 @@
         }],
         "action":{
         "default_icon":"img/Systum128.png",
-        "default_title":"JS veiwing system"
+        "default_title":"JS veiwing system",
+        "default_popup":"JS.html"
     },
 
       "icons": {
