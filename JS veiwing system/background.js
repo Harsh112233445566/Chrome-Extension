@@ -48,6 +48,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             response.json().then(data => {
               const likesData = {
                 'likes': data.likes,
+                'dislikes': data.dislikes,
+                'videoId': message.videoId,
+                'type':"NEW",
+                
               }
               //agar videoId nahi hai cache me to uske location me likesData store kar denge or cache time us paal ka denge
               if (!(message.videoId in cache)) {
@@ -63,9 +67,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       return true
 //agar ye case hai to hum tab ke liye ek css file insert kar denge
     case 'insertCss':
-      for (const file of message.files) {
-        chrome.tabs.insertCSS(sender.tab.id, { file })
-      }
+      chrome.scripting.insertCSS({
+        target: {
+          tabId: sender.tab.id,
+        },
+        files: message.files,
+      })
       break
 //agar ye case hai to hum cacheDuration ko update kar denge
     case 'updateSettings':

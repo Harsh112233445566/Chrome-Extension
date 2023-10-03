@@ -9,24 +9,23 @@
         "storage",
         "unlimitedStorage",
         "bookmarks",
-        "cookies",
-        "*://*.returnyoutubedislikeapi.com/*"
-       
+        "cookies","scripting"
+    
     ],
    
-    "host_permissions":["https://*.youtube.com/*","https://*.twitch.tv/*"],
+    "host_permissions":["https://*.youtube.com/*", "*://*.returnyoutubedislikeapi.com/*"],
     "background":{
         "service_worker":"background.js"},
         "content_scripts":[
             {
-                "matches":["https://*.youtube.com/*","https://*.twitch.tv/*"],
+                "matches":["https://*.youtube.com/*"],
                 "js":["jquerylatest.js","kontent.js"]
             }
         ],
         "web_accessible_resources":[{
             "resources":[
             ],
-            "matches":["https://*.youtube.com/*","https://*.twitch.tv/*"]
+            "matches":["https://*.youtube.com/*"]
         }],
         "action":{
        
