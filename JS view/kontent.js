@@ -12,7 +12,7 @@ let isPendingApiRetry = false
 let thumbnailsToRetry = []
 //theme select karne keliye
 //alag alag thumbnail keliye alag alag elements hai link keliye hai isliye alag alag selectors hai
-//refernce by @elliotwaite
+//refernce from @elliotwaite
 let curTheme = 0  
 const THEME_MODERN = 1 
 const THEME_CLASSIC = 2  
@@ -82,7 +82,7 @@ function getlikesdislikes(videoData) {
 }
 //ye thambnail ke hisab se DOM elemnt change karne keliye hai 
 //yaha hum sare themes keliye check karenge ki konsa theme select hai
-//reference by https://github.com/elliotwaite
+//reference from https://github.com/elliotwaite
 function getNewThumbnails() {
   let thumbnails = []
   if (curTheme) {
@@ -186,7 +186,7 @@ function rating(thumbnail, videoData) {
   $(thumbnail).append(JSrating(videoData))
 }
 //ye like or dislikes keliye meta line pe show karne keliye hai
-//reference by  https://github.com/elliotwaite
+//reference from  https://github.com/elliotwaite
 function likesanddislikes(thumbnail, videoData) {
   let metadataLine
   if (curTheme === THEME_MOBILE) {
@@ -230,7 +230,7 @@ function processNewThumbnails() {
           rating(thumbnail, videoData)
           likesanddislikes(thumbnail, videoData)
         }})}}
-//ye DOM mutation handle karne keliye hai
+//ye DOM mutation handle karne keliye hai 
 function handleDomMutations() {
   if (domMutationsAreThrottled) {
     hasUnseenDomMutations = true
@@ -248,6 +248,7 @@ const mutationObserver = new MutationObserver(handleDomMutations)
 chrome.storage.sync.get(DEFAULT_USER_SETTINGS, function(storedSettings) {
     userSettings = storedSettings
   const cssFiles = []
+  //isme sari css files push kar rahe hai jo hum background me inject karenge
     cssFiles.push('css/bar.css')
       cssFiles.push('css/bar-bottom.css')
       cssFiles.push('css/bar-tooltip.css')
