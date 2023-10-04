@@ -1,9 +1,9 @@
 
 {
-    "name":"JS veiwing system",
-    "version":"69",
-    "description":"Muzhe to bas paise chaiye",
-    "author":"me swayam",
+    "name":"JS-veiw",
+    "version":"6.9",
+    "description":"Pessa he pessa hoga",
+    "author":"Baburao Ganpatrao Apte",
     "options_ui": {
       "page": "check.html"
       },
