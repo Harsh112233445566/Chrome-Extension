@@ -1,5 +1,5 @@
 
-//DOM mutation handle karne keliye
+//DOM mutation handle karne keliye max 100ms delay hai 
 const HANDLE_DOM_MUTATIONS_THROTTLE_MS = 100
 let domMutationsAreThrottled = false
 let hasUnseenDomMutations = false
@@ -51,7 +51,7 @@ THUMBNAIL_SELECTORS[THEME_MOBILE] = '' +
     
 const THUMBNAIL_SELECTOR_VIDEOWALL = '' +
     'a.ytp-videowall-still'
-// default user settings diya hai option lagane ki soch raha tha but nahi huva 😢
+// default user settings diya hai option popup lagane ki soch raha tha but nahi huva 😢
 
 const DEFAULT_USER_SETTINGS = {
   barTooltip: true,
@@ -170,7 +170,7 @@ function retryProcessingThumbnailInTheFuture(thumbnail) {
     }, API_RETRY_DELAY)
   }
 }
-//ye tooltip text se video data object return karega
+//ye function video API request send karega agar likesData null huva to retry karega nahi to videoDataObject return karega or fhir usko append karega thumbnail se 
 function getVideoData(thumbnail, videoId) {
   return new Promise(resolve => {
     chrome.runtime.sendMessage(
@@ -185,7 +185,7 @@ function getVideoData(thumbnail, videoId) {
 function rating(thumbnail, videoData) {
   $(thumbnail).append(JSrating(videoData))
 }
-//ye like or dislikes keliye meta line pe show karne keliye hai
+//ye like or dislikes ko meta line pe show karne keliye hai
 //reference from  https://github.com/elliotwaite
 function likesanddislikes(thumbnail, videoData) {
   let metadataLine
@@ -230,7 +230,17 @@ function processNewThumbnails() {
           rating(thumbnail, videoData)
           likesanddislikes(thumbnail, videoData)
         }})}}
-//ye DOM mutation handle karne keliye hai 
+//ye DOM mutation handle karne keliye hai agar domMutationsAreThrottled true hai
+//matlab jo mutation humne DOM me kiya hai vo abhi tak humne dekha nahi hai 
+//agar sare mutation dekhe hai to new thambnail process karenga
+
+
+//Sankshipt roop se kahe to yah kood DOM (Document Object Model) ki parivartan ko sambhalne ke liye viksit 
+//kiya gaya hai, lekin yah aisa dhima dharmik tarike se karta hai taki parivartan ko bahut adhik baar prakriya 
+//na kare. Yah ek jhanda set karta hai jo darust karta hai jab DOM parivartan ko rok diya gaya hai, naye thumbnails ko 
+//prakriya karata hai yadi ve rokhe nahi gaye hain, aur dekha ja sakta hai ki kisi bache huye anupasthit DOM parivartan ko 
+//prakriya karne se pahle vilin kiye gaye parivartan ko karne se pahle vilin kiya jata hai. MutationObserver ka upayog DOM 
+//parivartan ho jane par is prakriya ko dekhne aur prarambh karne ke liye kiya jata hai.
 function handleDomMutations() {
   if (domMutationsAreThrottled) {
     hasUnseenDomMutations = true
@@ -258,6 +268,7 @@ chrome.storage.sync.get(DEFAULT_USER_SETTINGS, function(storedSettings) {
       query: 'insertCss',
       files: cssFiles,
     })
+    //yaha observer add kar rahe hai DOM mutations ke liye jo changes check karega
   handleDomMutations()
   mutationObserver.observe(document.body, {childList: true, subtree: true})
 })
