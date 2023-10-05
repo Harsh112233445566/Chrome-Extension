@@ -206,6 +206,7 @@ function rating(thumbnail, videoData) {
 //ye like or dislikes ko meta line pe show karne keliye hai
 //reference from @elliotwaite
 function likesanddislikes(thumbnail, videoData) {
+  //yaha humne metadata line ko dhund ke select karenge jaha hum likes or dislikes dikha rahe hai
   let metadataLine
   if (curTheme === mobile) {
     metadataLine = $(thumbnail).closest('ytm-media-item').find('ytm-badge-and-byline-renderer').last()
@@ -248,8 +249,8 @@ function newthambnailload() {
           rating(thumbnail, videoData)
           likesanddislikes(thumbnail, videoData)
         }})}}
-//ye DOM mutation handle karne keliye hai agar domisthrotled true hai
-//matlab jo mutation humne DOM me kiya hai vo abhi tak humne dekha nahi hai 
+//ye DOM mutation handle karne keliye hai agar useenmututation true hai 
+//matlab jo mutation humne DOM me kiya hai or likes dislikes display kiya hai vo abhi tak humne dekha nahi hai 
 //agar sare mutation dekhe hai to new thambnail process karenga
 
 

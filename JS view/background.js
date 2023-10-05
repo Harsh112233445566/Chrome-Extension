@@ -3,7 +3,7 @@
 
 let cache = {}
 let cacheTimes = []
-//yaha hum bas deafualt cache duration set kar rahe hai 
+//yaha hum bas deafault cache duration set kar rahe hai 
 let cacheDuration = 600000 
 //ye bas humne chrome storage se cache duration fetch karke set kar diya
 chrome.runtime.onInstalled.addListener(() => {
