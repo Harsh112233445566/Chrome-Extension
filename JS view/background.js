@@ -17,7 +17,7 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   switch (message.query) {
     //ye case videoId ko fetch karne ke liye ek API request bheja
-    case 'videoApiRequest':
+    case 'Request':
     
       const now = Date.now()
       let numRemoved = 0
@@ -70,7 +70,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       //hum true signal bhej rahe browser ko batane keliye ki hum async me response denge sendResponse use karke
       return true
 //agar ye case hai to hum tab ke liye ek css file insert kar denge
-    case 'insertCss':
+    case 'Css':
       chrome.scripting.insertCSS({
         target: {
           tabId: sender.tab.id,
