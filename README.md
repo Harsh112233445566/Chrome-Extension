@@ -3,7 +3,7 @@
   YT video link:https://www.youtube.com/watch?v=LozSXiUBp-c
 
 # Download link:
-  https://harsh112233445566.github.io/Devheat_Beta_10_pointer_webpage/
+ https://harsh112233445566.github.io/Extension-download-page/
 
 # Description:
   The Chrome extension is designed to enhance your YouTube viewing experience by analyzing the overall reception of videos. It automatically counts the likes and dislikes of each YouTube video and provides a recommendation on whether the video is worth watching based on this data.
