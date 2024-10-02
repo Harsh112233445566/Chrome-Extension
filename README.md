@@ -19,10 +19,10 @@ Overall, this extension is perfect for users who want to quickly assess the qual
 
 # Sample
 
-1. Recommmended
+1. **Recommmended
   <img width="424" alt="image" src="https://github.com/user-attachments/assets/152b48ef-5222-4747-a5d5-34ea57085272">
-  
-2. Not Recommended
+
+2. **Not Recommmended
    <img width="412" alt="image" src="https://github.com/user-attachments/assets/0283fd21-74c5-4645-87cd-1f1960cdf97e">
 
   
